@@ -1,6 +1,5 @@
 package e.m7eds.simpleexampleexoplayer;
 
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,18 +16,12 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
@@ -43,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.EventLi
 
     private SimpleExoPlayerView exoPlayerView;
     private SimpleExoPlayer exoPlayer;
-    private String videoUrl = "asset:///video.mp4";
     private boolean playWhenReady;
     private int currentWindow = 0;
     private long playbackPosition = 0;
@@ -63,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.EventLi
             playWhenReady = savedInstanceState.getBoolean(PLAYER_WHEN_READY_STATE_KEY);
             currentWindow = savedInstanceState.getInt(PLAYER_CURRENT_WINDOW_STATE_KEY);
         }
-
-        initializeMediaSession();
-        initializePlayer();
 
     }
 
@@ -106,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.EventLi
             exoPlayer.seekTo(currentWindow, playbackPosition);
         }
 
-        Uri uri = Uri.parse(videoUrl);
+        //Insert the link of the Audio/Video to be parsed
+        Uri uri = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4");
         MediaSource mediaSource = buildMediaSource(uri);
         exoPlayer.prepare(mediaSource, true, false);
     }
@@ -123,7 +113,9 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.EventLi
         Log.v("Tag", "MyLogs: OnStart Method is launched");
 
         if (Util.SDK_INT > 23) {
+            initializeMediaSession();
             initializePlayer();
+
         }
     }
 
@@ -134,7 +126,9 @@ public class MainActivity extends AppCompatActivity implements ExoPlayer.EventLi
         Log.v("Tag", "MyLogs: OnResume Method is launched");
 
         if ((Util.SDK_INT <= 23 || exoPlayer == null)) {
+            initializeMediaSession();
             initializePlayer();
+
         }
     }
 
